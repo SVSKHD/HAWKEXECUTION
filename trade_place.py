@@ -36,7 +36,9 @@ def trade_place(symbol, trade_type, lot=None, hedge=False):
 
     # Determine order type
     order_type = mt5.ORDER_TYPE_BUY if trade_type == 'buy' else mt5.ORDER_TYPE_SELL
-
+    print("trade_place", mt5.symbol_info_tick(symbol_name).bid)
+    if not mt5.symbol_info_tick(symbol_name):
+        print("not found")
     # Place trades
     trades_to_place = effective_trade_limit - current_positions
     for i in range(trades_to_place):
@@ -46,8 +48,7 @@ def trade_place(symbol, trade_type, lot=None, hedge=False):
             "symbol": symbol_name,
             "volume": lot,
             "type": order_type,
-            "price": mt5.symbol_info_tick(symbol_name).ask if trade_type == 'buy' else mt5.symbol_info_tick(
-                symbol_name).bid,
+            "price": mt5.symbol_info_tick(symbol_name).bid,
             "deviation": 10,
             "magic": 234000,
             "comment": f"Python script {'hedge' if hedge else 'normal'} trade",

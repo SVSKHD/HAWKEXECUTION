@@ -1,11 +1,13 @@
 from config import symbols_list
 from state import state_manager
 from trade_place import trade_place, close_trades_by_symbol
+import MetaTrader5 as mt5
 
 
 class SymbolHedgingStrategy:
     def __init__(self, symbol_data):
         self.symbol = symbol_data["symbol"]
+        self.symbol_trade_data = symbol_data
         self.lot = symbol_data["lot"]
         self.pip = symbol_data["pip"]
         self.threshold = symbol_data["threshold"]
@@ -91,14 +93,13 @@ class SymbolHedgingStrategy:
         thresholds = data["threshold_no"]
         if -1.5 <= thresholds <= -1:
             print(f"Threshold reached for {self.symbol} at price {current}")
-            trade_place({"symbol": self.symbol, "lot": self.lot}, "buy")
-        elif thresholds <= -2.5:
+            trade_place(self.symbol_trade_data, "buy", self.lot, False)
+        elif -2 >= thresholds >= -2.5:
             print(f"Closing trades for {self.symbol} at price {current}")
-            close_trades_by_symbol({"symbol": self.symbol})
+            close_trades_by_symbol(self.symbol_trade_data)
         elif 1 <= thresholds <= 1.5:
             print(f"Threshold reached for {self.symbol} at price {current}")
-            trade_place({"symbol": self.symbol, "lot": self.lot}, "sell")
-
+            trade_place(self.symbol_trade_data,"sell", self.lot, False)
 
 class MultiSymbolController:
     def __init__(self):

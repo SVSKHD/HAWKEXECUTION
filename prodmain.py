@@ -9,6 +9,7 @@ class SymbolHedgingStrategy:
         self.symbol = symbol_data["symbol"]
         self.lot = symbol_data["lot"]
         self.pip = symbol_data["pip"]
+        self.symbol_trade_data = symbol_data
         self.threshold = symbol_data["threshold"]
 
         # Initialize state for this symbol
@@ -18,9 +19,9 @@ class SymbolHedgingStrategy:
         """
         Calculate pip difference, thresholds, and direction for a given price movement.
         """
-        pip_difference = start - current
-        formatted_pips = pip_difference / self.pip
-        threshold_no = formatted_pips / self.threshold
+        pip_difference =float(start - current)
+        formatted_pips = float(pip_difference / self.pip)
+        threshold_no = float(formatted_pips / self.threshold)
 
         direction = "neutral"
         if threshold_no > 1:
@@ -34,8 +35,8 @@ class SymbolHedgingStrategy:
             "formatted_pips": round(formatted_pips, 2),
             "threshold_no": round(threshold_no, 2),
             "direction": direction,
-            "start": start,
-            "current": current,
+            "start": float(start),
+            "current": float(current),
         }
 
     def check_existing_trades(self):
@@ -102,13 +103,16 @@ class SymbolHedgingStrategy:
         thresholds = data["threshold_no"]
         if -1.5 <= thresholds <= -1:
             print(f"Threshold reached for {self.symbol} at price {current_price}")
-            trade_place({"symbol": self.symbol, "lot": self.lot}, "buy")
+            trade_place(self.symbol_trade_data, "buy", self.lot, False)
         elif thresholds <= -2.5:
             print(f"Closing trades for {self.symbol} at price {current_price}")
             close_trades_by_symbol({"symbol": self.symbol})
         elif 1 <= thresholds <= 1.5:
             print(f"Threshold reached for {self.symbol} at price {current_price}")
-            trade_place({"symbol": self.symbol, "lot": self.lot}, "sell")
+            trade_place(self.symbol_trade_data, "buy", self.lot, False)
+        elif 2<= thresholds <= 2.5:
+            print(f"Closing trades for {self.symbol} at price {current_price}")
+            close_trades_by_symbol(self.symbol)
 
 
 class MultiSymbolController:
