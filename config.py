@@ -1,9 +1,21 @@
 symbols_list = [
     {
         "symbol":"EURUSD",
-        "lot": 5.0,
+        "lot": 1.0,
         "pip": 0.0001,
         "threshold":15
+    },
+    {
+        "symbol": "USDJPY",
+        "lot": 1.0,
+        "pip": 0.01,
+        "threshold": 15
+    },
+    {
+        "symbol": "EURJPY",
+        "lot": 1.0,
+        "pip": 0.01,
+        "threshold": 15
     },
     # {
     #     "symbol": "BTCUSD",
@@ -25,7 +37,7 @@ symbols_list = [
     # }
     {
         "symbol": "GBPUSD",
-        "lot": 5.0,
+        "lot": 1.0,
         "pip": 0.0001,
         "threshold":15
     },
