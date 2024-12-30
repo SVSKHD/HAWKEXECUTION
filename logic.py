@@ -1,4 +1,4 @@
-from config import symbols_list
+from final.config import symbols_list
 # from trade_place import trade_place, close_trades_by_symbol
 # import MetaTrader5 as mt5
 
