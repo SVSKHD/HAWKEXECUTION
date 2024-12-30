@@ -1,7 +1,7 @@
 from config import symbols_list
 from prodmain import SymbolHedgingStrategy
 from utils import connect_mt5
-from fetch import fetch_price
+from final.fetch import fetch_price
 import asyncio
 from datetime import datetime
 

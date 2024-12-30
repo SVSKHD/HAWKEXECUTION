@@ -44,9 +44,10 @@ def fetch_price(symbol_data, fetch_type):
             )
         else:
             # Use the present day's date at 12:00 AM
+            previous_day = current_date - timedelta(days=1)
             target_time = datetime(
-                current_date.year, current_date.month, current_date.day,
-                0, 0, 0, tzinfo=server_timezone
+                previous_day.year, previous_day.month, previous_day.day,
+                21, 00, 0, tzinfo=server_timezone
             )
 
         formatted_date = target_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -70,3 +71,8 @@ def fetch_price(symbol_data, fetch_type):
     else:
         print("Invalid fetch type. Use 'current' or 'start'.")
         return None
+
+
+GBPUSD = fetch_price({'symbol':"GBPUSD"}, 'start')
+GBPUSDCURRENT = fetch_price({'symbol':"GBPUSD"}, 'current')
+print(GBPUSD, GBPUSDCURRENT)
