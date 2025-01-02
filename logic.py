@@ -80,7 +80,7 @@ def check_thresholds_and_execute(symbol_data, start, current):
     if -1.5 <= threshold <= -1:
         print(f"Threshold reached for {data['symbol']} at price {current}")
         # trade_place(symbol, "buy", symbol_data['lot'], False)
-    elif -2.5 <= threshold <= -2:
+    if -2.5 <= threshold <= -2:
         print("=" * 50)
         # close_trades_by_symbol(symbol_data)
         print(f"2nd threshold reached for {data['symbol']} at price {current}")
@@ -88,7 +88,7 @@ def check_thresholds_and_execute(symbol_data, start, current):
     if 1 <= threshold < 1.5:
 
         print(f"Threshold reached for {data['symbol']} at price {current}")
-    elif 2 < threshold <= 2.5:
+    if 2 < threshold <= 2.5:
         print("=" * 50)
         print(f"2nd threshold reached for {data['symbol']} at price {current}")
         print("=" * 50)

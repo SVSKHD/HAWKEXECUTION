@@ -73,6 +73,6 @@ def fetch_price(symbol_data, fetch_type):
         return None
 
 
-GBPUSD = fetch_price({'symbol':"GBPUSD"}, 'start')
-GBPUSDCURRENT = fetch_price({'symbol':"GBPUSD"}, 'current')
-print(GBPUSD, GBPUSDCURRENT)
+# GBPUSD = fetch_price({'symbol':"GBPUSD"}, 'start')
+# GBPUSDCURRENT = fetch_price({'symbol':"GBPUSD"}, 'current')
+# print(GBPUSD, GBPUSDCURRENT)

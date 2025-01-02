@@ -13,18 +13,13 @@ async def main():
         print("Failed to connect to MetaTrader 5")
         return
     print("Connected to MetaTrader 5")
-
-    # Initialize strategies for all symbols
     strategies = [SymbolHedgingStrategy(symbol) for symbol in symbols_list]
 
     while True:
         hours = datetime.now().hour
         if 0 <= hours < 19:
             print(f"Trading enabled at {datetime.now()}")
-
-            # Fetch prices and execute strategies for each symbol
             for strategy in strategies:
-                # Fetch start and current prices
                 symbol_data = strategy.symbol_trade_data
                 start_price = fetch_price(symbol_data, "start")
                 current_price = fetch_price(symbol_data, "current")
@@ -33,12 +28,9 @@ async def main():
                     print(f"Failed to fetch prices for {symbol_data['symbol']}. Skipping strategy execution.")
                     continue
 
-                # Execute the strategy with fetched prices
                 await asyncio.to_thread(strategy.execute_strategy, start_price, current_price)
         else:
             print(f"Trading disabled at {datetime.now()}")
-
-        # Wait for 1 second before repeating
         await asyncio.sleep(1)
 
 

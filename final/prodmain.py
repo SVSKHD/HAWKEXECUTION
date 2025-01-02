@@ -56,7 +56,7 @@ class SymbolHedgingStrategy:
                 state_manager.update_state(self.symbol, "hedge_trades_placed", True)
                 trade_place({"symbol": self.symbol, "lot": self.lot}, "buy", hedge=True)
 
-            elif 0.5 <= thresholds <= 0.7 and not trades_state["hedge_trades_placed"]:
+            if 0.5 <= thresholds <= 0.7 and not trades_state["hedge_trades_placed"]:
                 print(f"Positive hedging triggered for {self.symbol} at price {data['current']}")
                 state_manager.update_state(self.symbol, "hedge_trades_placed", True)
                 trade_place({"symbol": self.symbol, "lot": self.lot}, "sell", hedge=True)
@@ -72,7 +72,7 @@ class SymbolHedgingStrategy:
                 state_manager.update_state(self.symbol, "hedge_trades_placed", False)
                 close_trades_by_symbol({"symbol": self.symbol})
 
-            elif data["direction"] == "neutral" and 0.7 > thresholds > 0.5:
+            if data["direction"] == "neutral" and 0.7 > thresholds > 0.5:
                 print(f"Closing positive hedge trades for {self.symbol}")
                 state_manager.update_state(self.symbol, "hedge_trades_placed", False)
                 close_trades_by_symbol({"symbol": self.symbol})
@@ -104,13 +104,13 @@ class SymbolHedgingStrategy:
         if -1.5 <= thresholds <= -1:
             print(f"Threshold reached for {self.symbol} at price {current_price}")
             trade_place(self.symbol_trade_data, "buy", self.lot, False)
-        elif thresholds <= -2.5:
+        if thresholds <= -2.5:
             print(f"Closing trades for {self.symbol} at price {current_price}")
             close_trades_by_symbol({"symbol": self.symbol})
-        elif 1 <= thresholds <= 1.5:
+        if 1 <= thresholds <= 1.5:
             print(f"Threshold reached for {self.symbol} at price {current_price}")
             trade_place(self.symbol_trade_data, "buy", self.lot, False)
-        elif 2<= thresholds <= 2.5:
+        if 2<= thresholds <= 2.5:
             print(f"Closing trades for {self.symbol} at price {current_price}")
             close_trades_by_symbol(self.symbol)
 
