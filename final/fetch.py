@@ -47,7 +47,7 @@ def fetch_price(symbol_data, fetch_type):
             previous_day = current_date - timedelta(days=1)
             target_time = datetime(
                 previous_day.year, previous_day.month, previous_day.day,
-                21, 00, 0, tzinfo=server_timezone
+                20, 00, 0, tzinfo=server_timezone
             )
 
         formatted_date = target_time.strftime("%Y-%m-%d %H:%M:%S")

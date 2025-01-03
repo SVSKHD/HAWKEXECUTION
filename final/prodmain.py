@@ -14,6 +14,7 @@ class SymbolHedgingStrategy:
 
         # Initialize state for this symbol
         state_manager.initialize_symbol_state(self.symbol)
+        state_manager.update_state(self.symbol,"trade_placed", False)
 
     def calculate_pip_difference(self, start, current):
         """
@@ -70,12 +71,12 @@ class SymbolHedgingStrategy:
             if data["direction"] == "neutral" and -0.5 > thresholds >= -0.7:
                 print(f"Closing negative hedge trades for {self.symbol}")
                 state_manager.update_state(self.symbol, "hedge_trades_placed", False)
-                close_trades_by_symbol({"symbol": self.symbol})
+                close_trades_by_symbol(self.symbol_trade_data)
 
             if data["direction"] == "neutral" and 0.7 > thresholds > 0.5:
                 print(f"Closing positive hedge trades for {self.symbol}")
                 state_manager.update_state(self.symbol, "hedge_trades_placed", False)
-                close_trades_by_symbol({"symbol": self.symbol})
+                close_trades_by_symbol(self.symbol_trade_data)
 
     def execute_strategy(self, start, current_price=None):
         """
@@ -95,6 +96,10 @@ class SymbolHedgingStrategy:
         data = self.calculate_pip_difference(start, current_price)
         print(data)
 
+        # Get symbol state
+        trades_state = state_manager.get_state(self.symbol)
+        trade_placed = trades_state.get("trade_placed", False)
+
         # Check and handle hedging logic
         self.check_and_place_hedge(data)
         self.check_and_close_hedge(data)
@@ -104,15 +109,17 @@ class SymbolHedgingStrategy:
         if -1.5 <= thresholds <= -1:
             print(f"Threshold reached for {self.symbol} at price {current_price}")
             trade_place(self.symbol_trade_data, "buy", self.lot, False)
+            state_manager.update_state(self.symbol, "trade_placed", True)
         if thresholds <= -2.5:
             print(f"Closing trades for {self.symbol} at price {current_price}")
-            close_trades_by_symbol({"symbol": self.symbol})
+            close_trades_by_symbol(self.symbol_trade_data)
         if 1 <= thresholds <= 1.5:
             print(f"Threshold reached for {self.symbol} at price {current_price}")
             trade_place(self.symbol_trade_data, "buy", self.lot, False)
+            state_manager.update_state(self.symbol, "trade_placed", True)
         if 2<= thresholds <= 2.5:
             print(f"Closing trades for {self.symbol} at price {current_price}")
-            close_trades_by_symbol(self.symbol)
+            close_trades_by_symbol(self.symbol_trade_data)
 
 
 class MultiSymbolController:
